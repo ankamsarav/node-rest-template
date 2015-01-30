@@ -1,5 +1,8 @@
 'use strict';
 
+// -----------------------------------------------------------------------------
+// Database configuration
+// -----------------------------------------------------------------------------
 var dbConfig = {
     client: 'postgresql',
     debug: false,
@@ -12,18 +15,41 @@ var dbConfig = {
     }
 };
 
-// The two lines below make sure that float column types
-// return JavaScript floats instead of strings
+
+// -----------------------------------------------------------------------------
+// Postgres driver configuration
+// -----------------------------------------------------------------------------
+// Make sure that float column types return JavaScript floats instead of strings
 var pg = require('pg');
 require('pg-parse-float')(pg);
 
-// Create knex and bookshelf
-var knex = require('knex')(dbConfig);
-var bookshelf = require('bookshelf')(knex);
+
+// -----------------------------------------------------------------------------
+// Initialize the ORM (knex and bookshelf)
+// -----------------------------------------------------------------------------
+var initializeKnex = require('knex');
+var initializeBookshelf = require('bookshelf');
+
+var knex = initializeKnex(dbConfig);
+var bookshelf = initializeBookshelf(knex);
 bookshelf.plugin('registry');
 
+
+// -----------------------------------------------------------------------------
+// Destroy the database connection pool
+// -----------------------------------------------------------------------------
+function destroyConnectionPool(callback) {
+    if (knex && knex.client) {
+        knex.destroy(callback);
+    }
+    else {
+        callback();
+    }
+}
+
+// -----------------------------------------------------------------------------
 // Exports
+// -----------------------------------------------------------------------------
 exports.knex = knex;
 exports.bookshelf = bookshelf;
-
-console.log('Database initialized');
+exports.destroyConnectionPool = destroyConnectionPool;

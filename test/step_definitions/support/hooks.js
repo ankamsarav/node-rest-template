@@ -1,6 +1,7 @@
 'use strict';
 
-var knex = require(process.cwd() + '/server/common/orm').knex;
+var orm = require(process.cwd() + '/server/common/orm');
+var knex = orm.knex;
 
 var myHooks = function() {
 
@@ -14,6 +15,11 @@ var myHooks = function() {
         .catch(function(e) {
             console.error(e);
         });
+    });
+
+    // Stop the database after all tests are done
+    this.registerHandler('AfterFeatures', function (event, callback) {
+        orm.destroyConnectionPool(callback);
     });
 };
 
