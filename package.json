@@ -1,6 +1,6 @@
 {
   "name": "node-rest-template",
-  "description": "A template to develop a RESTful API using Node.js, bookshelf.js and a SQL database",
+  "description": "A template to develop RESTful APIs using Node.js, bookshelf.js and SQL",
   "version": "0.1.0",
   "author": "Naresh Bhatia",
   "license": "MIT",

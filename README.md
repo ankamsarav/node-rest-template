@@ -1,5 +1,5 @@
-# REST Server Template
-This template provides a starter project that implements best practices in developing and testing a RESTful API using Node.js, [Bookshelf.js](http://bookshelfjs.org/) and a SQL database.
+# Node REST Template
+This template provides a starter project for developing RESTful APIs using Node.js, [Bookshelf.js](http://bookshelfjs.org/) and SQL. It encourages best practices in coding and testing that result in accelerated development and a robust implementation.
 
 ## Requirements
 
@@ -7,7 +7,7 @@ This template provides a starter project that implements best practices in devel
     - on OSX, install [home brew](http://brew.sh/) and type `brew install node`
     - on Windows, use the installer available at [nodejs.org](http://nodejs.org/)
 
-- Make sure Postgres is installed on your machine, especially postgresql93-devel (development header files and libraries) (without this, `npm install` will fail).
+- Install Postgres and postgresql93-devel (development header files and libraries)
 
 - Create a database called `demo` and create the tables needed by the app
 
@@ -19,12 +19,11 @@ This template provides a starter project that implements best practices in devel
 - Open terminal
 
 - Type `npm install -g node-inspector node-gyp gulp`
-    - node-gyp is required for `npm install` (in later steps) to work correctly
+    - node-gyp is required for `npm install` (in later steps) to succeed
 
 - Clone this repo
 
--  Configure the application:
-  * Make sure that `server/common/orm.js` has the correct database parameters
+- Make sure that `server/common/orm.js` has the correct database parameters
 
 ## Quick Start
 Run the application locally:
@@ -33,11 +32,11 @@ $ npm install
 $ gulp serve
 ```
 - `npm install` will install the required node libraries under `node_modules`.
-- `gulp serve` will start the Node.js application. It is designed for an efficient development process. As you make changes to the code, the application will be restarted to reflect the changes immediately.
+- `gulp serve` will start the Node.js application. It is designed for an efficient development process. As you make changes to the code, the application will restart to reflect the changes immediately.
 
-To quickly test the server, point your browser to [http://localhost:8080/account](http://localhost:8080/account) - you should see a response with account information in JSON format.
+To verify that the application is working correctly, point your browser to [http://localhost:8080/account](http://localhost:8080/account) - you should see a response with account information in JSON format.
 
-When you deploy this application to production, run the following command to start the application without the help of gulp:
+When you deploy the application to a production environment, run the following command to start it without using gulp:
 
     $ npm start
 
@@ -45,7 +44,7 @@ A better way to run the application in production is to start it using forever. 
 
     $ forever start server/server.js
 
-- To debug the application (start node-debug on port 9090 because the application itself uses the default port 8080)
+- To debug the application use node-debug (start node-debug on port 9090 because the application itself uses the default port 8080)
 
     $ node-debug --web-port 9090 server/server.js
 
@@ -64,7 +63,7 @@ A better way to run the application in production is to start it using forever. 
 
 - `server:` contains all the source files for the RESTful server
 
-- `sql`: scripts for creating the database schema and loading the database
+- `sql`: scripts for creating the database schema and loading the data
 
 - `test:` server tests
 
@@ -80,7 +79,7 @@ A better way to run the application in production is to start it using forever. 
     /server.js
 ```
 
-The `server` folder contains the source for the RESTful server. `server.js` is the server startup script. In addition you will find various folders that arrange the application's functionality into logical layers as suggested by [Domain-Driven Design](http://www.amazon.com/exec/obidos/ASIN/0321125215/domainlanguag-20) and [The Onion Architecture](http://jeffreypalermo.com/blog/the-onion-architecture-part-1/):
+The `server` folder contains the source for the RESTful server. `server.js` is the startup script. In addition you will find various folders that arrange the application's functionality into logical layers as suggested by [Domain-Driven Design](http://www.amazon.com/exec/obidos/ASIN/0321125215/domainlanguag-20) and [The Onion Architecture](http://jeffreypalermo.com/blog/the-onion-architecture-part-1/):
 
 - `api:` This layer exposes the RESTful API. It is essentially the User Interface layer of the Onion Architecture - in this case the "user" is an HTTP client.
 
@@ -120,17 +119,21 @@ The `server` folder contains the source for the RESTful server. `server.js` is t
 
 - `gulp serve`
 
-    Runs the application using gulp. As you make changes to the code, the application will be restarted to reflect the changes immediately..
+    Runs the application using gulp. As you make changes to the code, the application will restart to reflect the changes immediately.
 
-- `gulp serve --debug`
+- node-debug --web-port 9090 server/server.js
+
+   Launch the application in debug mode.
+
+- `gulp serve --debug` (TODO: this is not yet working)
 
     Launch debugger with node-inspector.
 
-- `gulp serve --debug-brk`
+- `gulp serve --debug-brk` (TODO: this is not yet working)
 
     Launch debugger and break on 1st line with node-inspector.
 
-### Run application in production
+### Run application in production mode
 
 - `npm start`
 
