@@ -1,14 +1,8 @@
 /* global -Promise */
 'use strict';
 
-var Promise = require('bluebird');
 var Asset = require('../domain/Asset');
 var Account = require('../domain/Account');
-
-// Sample call that returns a resolved promise
-// function doStuff() {
-//     return Promise.resolve();
-// }
 
 // Creates a new asset and inserts it in the database.
 // Returns a promise which when fulfilled provides the inserted fund with its id populated.
