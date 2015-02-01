@@ -6,6 +6,7 @@ var gulp = require('gulp');
 var $ = require('gulp-load-plugins')({
     lazy: true
 });
+var child_process = require('child_process');
 
 // port defined in the environment takes precedence over the default port
 var port = process.env.PORT || config.defaultPort;
@@ -42,17 +43,46 @@ gulp.task('vet', function() {
 
 
 /**
+ * Run Cucumber tests
+ * @return {Stream}
+ */
+gulp.task('cucumber', function() {
+    var args = [
+        './node_modules/cucumber/bin/cucumber.js',
+        config.features,
+        '--require', config.steps,
+        '--format', 'pretty'
+    ];
+
+    var cucumber = child_process.spawn('node', args);
+
+    cucumber.stdout.on('data', function(data) {
+        process.stdout.write(data);
+    });
+
+    cucumber.stderr.on('data', function(data) {
+        process.stdout.write(data);
+    });
+});
+
+
+/**
  * Run the tests
  * @return {Stream}
  */
-gulp.task('test', ['vet'], function() {
-    return gulp
-        .src(config.features)
-        .pipe($.cucumber({
-            steps: config.steps,
-            tags: '~@wip',
-            format: 'pretty'
-        }));
+gulp.task('test', ['vet', 'cucumber'], function() {
+});
+
+
+/**
+ * Run tests whenever source or test files change
+ * @return {Stream}
+ */
+gulp.task('autotest', ['test'], function() {
+    var watcher = gulp.watch(config.testDependencies, ['test']);
+    watcher.on('change', function(event) {
+        console.log('File ' + event.path + ' was ' + event.type + ', running tests...');
+    });
 });
 
 

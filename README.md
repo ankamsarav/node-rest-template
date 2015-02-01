@@ -112,6 +112,10 @@ The `server` folder contains the source for the RESTful server. `server.js` is t
 
     Runs all acceptance tests using cucumber. Depends on vet task, for code analysis. Note that this task will alter the database. To resume normal operation of the application, you must reload the data.
 
+- `gulp autotest`
+
+    Run tests whenever source or test files change.
+
 ### Run application for development
 
 - `gulp serve`

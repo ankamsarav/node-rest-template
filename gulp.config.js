@@ -14,10 +14,14 @@ module.exports = function() {
         root: root,
         server: server,
         test: test,
+        testDependencies: [
+            server + '**/*',
+            test + '**/*'
+        ],
 
         /* ----- Tests ----- */
-        features: [test + 'features/*'],
-        steps: [test + 'step_definitions'],
+        features: test + 'features/',
+        steps: test + 'step_definitions/',
 
         /* ----- Node settings ----- */
         nodeServer: server + 'server.js',

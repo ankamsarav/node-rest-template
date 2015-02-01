@@ -1,4 +1,3 @@
-/* global -Promise */
 'use strict';
 
 var Asset = require('../domain/Asset');
@@ -37,7 +36,6 @@ function getAccount(investment) {
             return account;
         });
 }
-
 
 module.exports = {
     createAsset: createAsset,
