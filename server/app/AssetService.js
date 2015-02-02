@@ -1,7 +1,8 @@
 'use strict';
 
-var Asset = require('../domain/Asset');
-var Account = require('../domain/Account');
+var domain = require('../domain');
+var Asset = domain.Asset;
+var Account = domain.Account;
 
 // Creates a new asset and inserts it in the database.
 // Returns a promise which when fulfilled provides the inserted fund with its id populated.
