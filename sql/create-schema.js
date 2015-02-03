@@ -43,6 +43,12 @@ knex.schema
     //})
 
 
+    /***** Destroy the database connection pool *****/
+    .then(function() {
+        knex.destroy();
+    })
+
+
     // Finally, add a .catch handler for the promise chain
     .catch(function (e) {
         console.error(e);
