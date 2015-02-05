@@ -5,6 +5,8 @@
 var _ = require('underscore');
 var Promise = require('bluebird');
 var expect = require('./chai-helpers').expect;
+var domain = require(process.cwd() + '/server/domain');
+var Asset = domain.Asset;
 var AssetService = require(process.cwd() + '/server/app/AssetService');
 
 var World = function World(callback) {
@@ -13,10 +15,11 @@ var World = function World(callback) {
     this.investment = undefined;
     this.error = undefined;
 
-    this.createAssets = function(assets, callback) {
+    this.createAssets = function(assetDataTable, callback) {
         var tasks = [];
-        _.each(assets, function(asset) {
-            tasks.push(AssetService.createAsset(asset));
+        _.each(assetDataTable, function(assetData) {
+            var asset = new Asset(assetData);
+            tasks.push(AssetService.saveAsset(asset));
         });
 
         Promise.all(tasks)
