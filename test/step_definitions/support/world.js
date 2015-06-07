@@ -1,54 +1,76 @@
 /* jshint expr: true */
-/* global -Promise */
 'use strict';
 
-var _ = require('underscore');
-var Promise = require('bluebird');
 var expect = require('./chai-helpers').expect;
 var domain = require(process.cwd() + '/server/domain');
-var Asset = domain.Asset;
-var AssetService = require(process.cwd() + '/server/app/AssetService');
+var application = require(process.cwd() + '/server/application');
+var Account = domain.Account;
+var AccountService = application.AccountService;
+
 
 var World = function World(callback) {
-
+    // Cached objects
     this.account = undefined;
-    this.investment = undefined;
-    this.error = undefined;
 
-    this.createAssets = function(assetDataTable, callback) {
-        var tasks = [];
-        _.each(assetDataTable, function(assetData) {
-            var asset = new Asset(assetData);
-            tasks.push(AssetService.saveAsset(asset));
-        });
+    // ----- Accounts -----
+    this.createAccount = function(name, callback) {
+        var self = this;
 
-        Promise.all(tasks)
+        AccountService.createAccount({name: name})
+            .then(function(account) {
+                self.account = account.toJSON();
+                callback();
+            });
+    };
+
+    this.changeAccountName = function(name, callback) {
+        var self = this;
+
+        self.account.name = name;
+
+        AccountService.updateAccount(self.account)
+            .then(function(account) {
+                self.account = account.toJSON();
+                callback();
+            });
+    };
+
+    this.getAccount = function(callback) {
+        var self = this;
+
+        AccountService.getAccount(self.account.id)
+            .then(function(account) {
+                self.account = account.toJSON();
+                callback();
+            });
+    };
+
+    this.deleteAccount = function(callback) {
+
+        AccountService.deleteAccount(this.account.id)
             .then(function() {
                 callback();
             });
     };
 
-    this.setInvestment = function(investment) {
-        this.investment = investment;
+    this.assertAccountName = function(expectedName) {
+        expect(this.account.name).to.equal(expectedName);
     };
 
-    this.getAccount = function(callback) {
-        var self = this;
-        AssetService.getAccount(this.investment)
-            .then(function (account) {
-                self.account = account;
+    this.assertAccountDoesNotExist = function(callback) {
+        AccountService.getAccount(this.account.id)
+            .then(function(account) {
+                callback.fail(new Error('Account exists: ' + account.get('name')));
+            })
+            .catch(Account.NotFoundError, function() {
+                // NotFoundError is expected
                 callback();
             });
-    };
-
-    // ----- Asserts -----
-    this.assertAccountSummary = function(expectedAccountSummary) {
-        expect(this.account.market_value).to.almost.equal(parseFloat(expectedAccountSummary.market_value), 0);
-        expect(this.account.earnings).to.almost.equal(parseFloat(expectedAccountSummary.earnings), 0);
-        expect(this.account.cash).to.almost.equal(parseFloat(expectedAccountSummary.cash), 0);
     };
 
     callback();
 };
 
-module.exports.World = World;
+module.exports = {
+    World: World
+};

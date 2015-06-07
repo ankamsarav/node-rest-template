@@ -1,6 +1,6 @@
 'use strict';
 
-var orm = require(process.cwd() + '/server/common/orm');
+var orm = require(process.cwd() + '/server/infrastructure/orm');
 var knex = orm.knex;
 
 var myHooks = function() {
@@ -8,17 +8,17 @@ var myHooks = function() {
     this.Before(function(callback) {
 
         // Truncate assets
-        knex.raw('truncate table assets cascade')
-        .then(function() {
-            callback();
-        })
-        .catch(function(e) {
-            console.error(e);
-        });
+        knex.raw('truncate table accounts cascade')
+            .then(function() {
+                callback();
+            })
+            .catch(function(e) {
+                console.error(e);
+            });
     });
 
     // Stop the database after all tests are done
-    this.registerHandler('AfterFeatures', function (event, callback) {
+    this.registerHandler('AfterFeatures', function(event, callback) {
         orm.destroyConnectionPool(callback);
     });
 };

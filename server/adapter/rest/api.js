@@ -17,7 +17,7 @@ var enableCORS = function(req, res, next) {
 
     // intercept OPTIONS method to simply send a 200 response
     if (req.method === 'OPTIONS') {
-        res.status(200).end();
+        res.status(200).send();
     }
     else {
         next();
@@ -28,7 +28,7 @@ var enableCORS = function(req, res, next) {
 api.use(enableCORS);
 
 // Add middleware to parse the POST data of the body
-api.use(bodyParser.urlencoded({ extended: true }));
+api.use(bodyParser.urlencoded({extended: true}));
 
 // Add middleware to parse application/json
 api.use(bodyParser.json());
@@ -37,6 +37,6 @@ api.use(bodyParser.json());
 api.use('/', express.static(__dirname + '/../public'));
 
 // Add API routes
-require('./AccountController').addRoutes(api);
+require('./AccountResource').addRoutes(api);
 
 module.exports = api;

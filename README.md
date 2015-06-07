@@ -1,5 +1,8 @@
 # Node REST Template
-This template provides a starter project for developing RESTful APIs using Node.js, [Bookshelf.js](http://bookshelfjs.org/) and SQL. It encourages best practices in coding and testing, resulting in an accelerated development cycle.
+This template provides a starter project that implements best practices in developing Node.js, REST and Bookshelf applications. See the following projects for sample usage in a realistic application:
+
+- [Manage My Money Server](https://github.com/archfirst/manage-my-money-server) (Node.js, REST and Bookshelf best practices)
+- [Manage My Money Client](https://github.com/archfirst/manage-my-money-client) (AngularJS best practices)
 
 ## Requirements
 
@@ -18,12 +21,13 @@ This template provides a starter project for developing RESTful APIs using Node.
 
 - Open a terminal (command line) window
 
-- Type `npm install -g node-inspector node-gyp gulp`
+- Type `npm install -g node-inspector node-gyp gulp bunyan`
     - node-gyp is required for `npm install` to succeed
+    - bunyan is required for displaying the application log in a human readable format
 
 - Clone this repo
 
-- Make sure that `server/common/orm.js` has the correct database parameters
+- Make sure that `server/infrastructure/orm.js` has the correct database parameters
 
 ## Quick Start
 Run the application locally:
@@ -33,20 +37,21 @@ $ gulp serve
 ```
 - `npm install` will install the required node libraries under `node_modules`.
 - `gulp serve` will start the application. It is designed for an efficient development process. As you make changes to the code, the application will restart to reflect the changes immediately.
+- `npm start` is a quick way to start the application in non-development mode.
 
-To verify that the application is working correctly, point your browser to [http://localhost:8080/account](http://localhost:8080/account) - you should see a response with account information in JSON format.
+To verify that the application is working correctly, point your browser to [http://localhost:8080/accounts](http://localhost:8080/accounts) - you should see a response with a list of accounts in JSON format.
 
 When you deploy the application to a production environment, run the following command to start it without using gulp:
 
-    $ npm start
+    $ node server/server.js | bunyan -o short
 
 A better way to run the application in production is to start it using forever. This will automatically restart the application in case of a failure:
 
-    $ forever start server/server.js
+    $ forever start server/server.js | bunyan -o short
 
 - To debug the application use node-debug (start node-debug on port 9090 because the application itself uses the default port 8080)
 
-    $ node-debug --web-port 9090 server/server.js
+    $ node-debug --web-port 9090 server/server.js | bunyan -o short
 
 ## Folder Structure
 
@@ -64,29 +69,28 @@ A better way to run the application in production is to start it using forever. 
 - `sql`: scripts for creating the database schema and loading data
 - `test:` server tests
 
-### Serve Folder Structure
+### Server Folder Structure
 
 ```
 /server
-    /api
-    /app
-    /common
+    /adapter
+    /application
     /domain
+    /infrastructure
     /public
-    /server.js
 ```
 
-The `server` folder contains the source for the RESTful server. `server.js` is the startup script. Below this you will find various folders that arrange the application into logical layers as suggested by [Domain-Driven Design](http://www.amazon.com/exec/obidos/ASIN/0321125215/domainlanguag-20) and [The Onion Architecture](http://jeffreypalermo.com/blog/the-onion-architecture-part-1/):
+The server folder contains sub-folders that arrange the application into logical layers as suggested by the [Hexagonal Architecture](http://alistair.cockburn.us/Hexagonal+architecture) (a.k.a. the [Onion Architecture](http://jeffreypalermo.com/blog/the-onion-architecture-part-1/)):
 
-- `api:` This layer exposes the RESTful API. It is essentially the User Interface layer of the Onion Architecture (the "user" for this application is any HTTP client).
+- The `adapter` layer *adapts* interactions from the external world to the application layer. Currently this layer contains only the REST adapter that converts incoming HTTP messages to a format acceptable by the application layer. Technically speaking, database persistence should also be handled in this layer. However because JavaScript does not have the concept of interfaces and dependency injection (at least not very easily), we have embedded persistence in the application layer.
 
-- `app:` This is the Application Services layer. It coordinates application activities such as creation and management of the domain objects.
+- The `application` layer coordinates high-level activities such as creation of the domain objects and asking them to perform tasks requested by the external world. We also handle persistence in this layer using an Object-Relational Mapping (ORM) tool called [Bookshelf](http://bookshelfjs.org/).
 
-- `common:` This is the infrastructure layer that's supports all other layers.
+- The `domain` layer encapsulate the state and behavior of the business domain. It consists of entities and value objects. See [this article](https://archfirst.org/domain-driven-design/) for a detailed description of the domain layer.
 
-- `domain:` The domain layer encapsulate the state and behavior of the application's business domain. It consists of entities and value objects. See [this article](http://archfirst.org/books/domain-layer) for a detailed description of the domain layer. We use an Object-Relational Mapping (ORM) tool called [Bookshelf.js](http://bookshelfjs.org/) to persist our entities to a SQL database.
+- The `infrastructure` layer contains common application facilities such as logging and database initialization.
 
-- `public:`: Contains a simple web page to display the name of the application. Since the primary purpose of this server is to expose a RESTful API, we do not expect to add any more functionality to this folder.
+- The `public` folder contains a simple web page to display the name of the application. Since the primary purpose of this application is to expose a RESTful API, we do not expect to add any more functionality to this folder.
 
 ## Tasks
 
@@ -126,18 +130,10 @@ The `server` folder contains the source for the RESTful server. `server.js` is t
 
    Launch the application in debug mode.
 
-- `gulp serve --debug` (TODO: fix this - it is not working)
-
-    Launch debugger with node-inspector.
-
-- `gulp serve --debug-brk` (TODO: fix this - it is not working)
-
-    Launch debugger and break on 1st line with node-inspector.
-
 ### Run application in production mode
 
-- `npm start`
+- `node server/server.js | bunyan -o short`
 
-or Use `forever` to automatically restart the application in case of a failure:
+You may use `forever` to automatically restart the application in case of a failure:
 
-- `forever start server/server.js`
+- `forever start server/server.js | bunyan -o short`

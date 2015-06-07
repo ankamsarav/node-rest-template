@@ -50,6 +50,8 @@ function destroyConnectionPool(callback) {
 // -----------------------------------------------------------------------------
 // Exports
 // -----------------------------------------------------------------------------
-exports.knex = knex;
-exports.bookshelf = bookshelf;
-exports.destroyConnectionPool = destroyConnectionPool;
+module.exports = {
+    knex: knex,
+    bookshelf: bookshelf,
+    destroyConnectionPool: destroyConnectionPool
+};

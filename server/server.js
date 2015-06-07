@@ -1,22 +1,24 @@
 'use strict';
 
+var log = require('./infrastructure/logger');
+
 // -----------------------------------------------------------------------------
 // Start the database
 // -----------------------------------------------------------------------------
-var orm = require('./common/orm');
-console.log('Database Started');
+var orm = require('./infrastructure/orm');
+log.info('Database Started');
 
 // -----------------------------------------------------------------------------
 // Start the HTTP Server and expose the RESTful API
 // -----------------------------------------------------------------------------
 var port = process.env.PORT || 8080;
 
-var api = require('./api/api');
+var api = require('./adapter/rest/api');
 var server = require('http').createServer(api);
 
 // Start listening to HTTP requests
 server.listen(port, function() {
-    console.log('Listening on port ' + port);
+    log.info('Listening on port ' + port);
 });
 
 // -----------------------------------------------------------------------------
@@ -24,12 +26,12 @@ server.listen(port, function() {
 // (i.e. Ctrl-C is pressed)
 // -----------------------------------------------------------------------------
 process.on('SIGINT', function() {
-    console.log('\nSIGINT received ...');
+    log.info('SIGINT received ...');
     server.close(function() {
-        console.log('Server stopped ...');
+        log.info('Server stopped ...');
         orm.destroyConnectionPool(function() {
-            console.log('Database stopped ...');
-            console.log('Exiting process ...');
+            log.info('Database stopped ...');
+            log.info('Exiting process ...');
             process.exit();
         });
     });

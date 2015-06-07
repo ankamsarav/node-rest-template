@@ -17,30 +17,30 @@ var knex = require('knex')(dbConfig);
 knex.schema
 
     /***** Drop foreign keys *****/
-    //.table('assets', function(table) {
-    //    table.dropForeign('fund_id');
-    //})
+    // Example:
+    // .table('transactions', function(table) {
+    //     table.dropForeign('account_id');
+    // })
 
 
     /***** Drop tables *****/
-    .dropTableIfExists('assets')
+    .dropTableIfExists('accounts')
 
 
     /***** Create tables (in alphabetic order) *****/
-    // Assets
-    .createTable('assets', function (table) {
+    // Accounts
+    .createTable('accounts', function(table) {
         table.increments('id');
-        table.string('asset_class', 32).notNullable();
-        table.decimal('market_value', 19, 4).notNullable();
-        table.decimal('percent_allocation', 19, 4).notNullable();
-        table.decimal('percent_return', 19, 4).notNullable();
+        table.string('name', 64).notNullable().unique();
     })
 
 
     /***** Add foreign keys *****/
-    //.table('assets', function(table) {
-    //    table.integer('fund_id').unsigned().notNullable().references('funds.id');
-    //})
+    // Example:
+    // .table('transactions', function(table) {
+    //     table.integer('account_id').unsigned().notNullable().references('accounts.id');
+    //     table.integer('category_id').unsigned().notNullable().references('categories.id');
+    // })
 
 
     /***** Destroy the database connection pool *****/
@@ -50,6 +50,6 @@ knex.schema
 
 
     // Finally, add a .catch handler for the promise chain
-    .catch(function (e) {
+    .catch(function(e) {
         console.error(e);
     });

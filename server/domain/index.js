@@ -1,4 +1,5 @@
 'use strict';
 
-exports.Asset = require('./Asset');
-exports.Account = require('./Account');
+module.exports = {
+    Account: require('./Account')
+};

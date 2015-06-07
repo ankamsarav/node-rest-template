@@ -1,10 +1,14 @@
 'use strict';
 
 var chai = require('chai');
-var chaiStats = require('chai-stats');
 
-// Set up chaiStats
-chai.use(chaiStats);
+// Matchers for common date comparisons
+chai.use(require('chai-datetime'));
+
+// Statistical and numerical assertions such as .almost.equal
+chai.use(require('chai-stats'));
 
 // Exports
-exports.expect = chai.expect;
+module.exports = {
+    expect: chai.expect
+};

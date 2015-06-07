@@ -50,8 +50,10 @@ gulp.task('cucumber', function() {
     var args = [
         './node_modules/cucumber/bin/cucumber.js',
         config.features,
-        '--require', config.steps,
-        '--format', 'pretty'
+        '--require',
+        config.steps,
+        '--format',
+        'pretty'
     ];
 
     var cucumber = child_process.spawn('node', args);
@@ -114,13 +116,13 @@ gulp.task('serve', function() {
             log('*** nodemon restarted');
             log('files changed:\n' + ev);
         })
-        .on('start', function () {
+        .on('start', function() {
             log('*** nodemon started');
         })
-        .on('crash', function () {
+        .on('crash', function() {
             log('*** nodemon crashed: script crashed for some reason');
         })
-        .on('exit', function () {
+        .on('exit', function() {
             log('*** nodemon exited cleanly');
         });
 });
@@ -137,7 +139,8 @@ function log(msg) {
                 $.util.log($.util.colors.blue(msg[item]));
             }
         }
-    } else {
+    }
+    else {
         $.util.log($.util.colors.blue(msg));
     }
 }

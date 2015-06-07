@@ -1,6 +1,5 @@
 SQL Script Generation
 =====================
 
-create-schema.sql
------------------
-create-schema.js --> manually format output --> create-schema.sql
+1. Run `node create-schema.js`
+2. Manually format the output and save it in `create-schema.sql`
