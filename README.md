@@ -1,10 +1,10 @@
 # Node REST Template
 This template provides a starter project that implements best practices in Node.js, REST and Domain-Driven Design. Features include:
-- Use of the Hexagonal Architecture to arrange the application into logical layers, with well-defined responsibilities.
-- Use of BDD and Specification-by-Example techniques for documenting application features. Cucumber is used for automated testing.
-- RESTful APIs are implemented using the Express framework.
-- Persistence is implemented using Bookshelf.
-- Logging and error handling are implemented using Bunyan.
+- Use of the [Hexagonal Architecture](http://alistair.cockburn.us/Hexagonal+architecture) to arrange the application into logical layers, with well-defined responsibilities.
+- Use of BDD and [Specification-by-Example](http://specificationbyexample.com/) techniques for documenting application features. [Cucumber](https://github.com/cucumber/cucumber-js) is used for automated testing.
+- RESTful APIs are implemented using the [Express](http://expressjs.com/) framework.
+- Persistence is implemented using [Bookshelf](http://bookshelfjs.org/).
+- Logging and error handling are implemented using [Bunyan](https://github.com/trentm/node-bunyan).
 - The build system is Gulp based – code changes are reflected in the server immediately.
 
 Check out the following projects to see how this template can be used to build real applications:
