@@ -1,7 +1,14 @@
 # Node REST Template
-This template provides a starter project that implements best practices in developing Node.js, REST and Bookshelf applications. See the following projects for sample usage in a realistic application:
+This template provides a starter project that implements best practices in Node.js, REST and Domain-Driven Design. Features include:
+- Use of the Hexagonal Architecture to arrange the application into logical layers, with well-defined responsibilities.
+- Use of BDD and Specification-by-Example techniques for documenting application features. Cucumber is used for automated testing.
+- RESTful APIs are implemented using the Express framework.
+- Persistence is implemented using Bookshelf.
+- Logging and error handling are implemented using Bunyan.
+- The build system is Gulp based – code changes are reflected in the server immediately.
 
-- [Manage My Money Server](https://github.com/archfirst/manage-my-money-server) (Node.js, REST and Bookshelf best practices)
+Check out the following projects to see how this template can be used to build real applications:
+- [Manage My Money Server](https://github.com/archfirst/manage-my-money-server) (Node.js, REST and DDD best practices)
 - [Manage My Money Client](https://github.com/archfirst/manage-my-money-client) (AngularJS best practices)
 
 ## Requirements
